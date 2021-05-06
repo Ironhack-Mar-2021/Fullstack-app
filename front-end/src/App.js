@@ -8,7 +8,6 @@ function App() {
 
   function handleChange(e) {
     setMessage(e.target.value)
-
     console.log(message)
   }
 
