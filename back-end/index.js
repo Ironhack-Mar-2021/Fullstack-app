@@ -23,6 +23,9 @@ app.get("/getMessage", (req, res) => Blog.find().then((response) => res.json(res
 app.post("/", (req, res) => {
     console.log(req.body)
     Blog.create(req.body)
+      .then((response) => {
+          res.status(200).json(response);
+      })
 });
 
 app.listen(5000, () => console.log("Listening on port 5000"));

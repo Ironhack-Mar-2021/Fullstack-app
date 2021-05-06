@@ -9,20 +9,28 @@ function App() {
 
   useEffect(()=> {
     axios.get('http://localhost:5000/getMessage')
-    .then((res) => setMessages(res.data))
-  },[])
-  
+    .then((res) => {
+      console.log(res.data);
+      setMessages(res.data);
+    })
+  },[]);
 
+  function ShowMessages() {
+    return messages.map((msg) => (
+        <div key={msg.__id}>
+          {msg.message}
+        </div>
+      ))
+  }
 
   function handleChange(e) {
-    console.log(messages)
     setMessage(e.target.value);
-    console.log(message);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    axios.post("http://localhost:5000", { message });
+    axios.post("http://localhost:5000", { message })
+      .then((res) => setMessages([...messages, res.data]));
   }
 
   return (
@@ -32,6 +40,7 @@ function App() {
         <input type="text" onChange={handleChange} />
         <button type="submit">Submit</button>
       </form>
+      <ShowMessages/>
     </div>
   );
 }
