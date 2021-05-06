@@ -5,22 +5,35 @@ import axios from "axios";
 
 function App() {
   const [message, setMessage] = useState("");
-  const[ messages, setMessages] = useState([])
+  const [messages, setMessages] = useState([])
 
-  useEffect(()=> {
+  useEffect(() => {
     axios.get('http://localhost:5000/getMessage')
-    .then((res) => {
-      console.log(res.data);
-      setMessages(res.data);
-    })
-  },[]);
+      .then((res) => {
+        console.log(res.data);
+        setMessages(res.data);
+      })
+  }, []);
 
   function ShowMessages() {
     return messages.map((msg) => (
-        <div key={msg.__id}>
-          {msg.message}
-        </div>
-      ))
+      <div key={msg.__id}>
+        {msg.message}
+        <button type="delete" onClick={() => handleClick(msg._id)}>Delete</button>
+      </div>
+
+    ))
+  }
+
+  function handleClick(messageId) {
+    axios.delete(`http://localhost:5000/delete/${messageId}`).then(() => {
+      let updatedMessages = messages.filter(message => {
+        console.log(message._id, messageId)
+        return message._id != messageId
+      })
+
+      setMessages(updatedMessages)
+    })
   }
 
   function handleChange(e) {
@@ -40,7 +53,7 @@ function App() {
         <input type="text" onChange={handleChange} />
         <button type="submit">Submit</button>
       </form>
-      <ShowMessages/>
+      <ShowMessages />
     </div>
   );
 }

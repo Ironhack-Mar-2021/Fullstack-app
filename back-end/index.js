@@ -17,15 +17,17 @@ mongoose
   .catch(err => console.error('Error connecting to mongo', err));
 
 
-app.get("/getMessage", (req, res) => Blog.find().then((response) => res.json(response)) );
+app.get("/getMessage", (req, res) => Blog.find().then((response) => res.json(response)));
 
 
 app.post("/", (req, res) => {
-    console.log(req.body)
-    Blog.create(req.body)
-      .then((response) => {
-          res.status(200).json(response);
-      })
+  console.log(req.body)
+  Blog.create(req.body)
+    .then((response) => {
+      res.status(200).json(response);
+    })
 });
+
+app.delete("/delete/:messageId", (req, res) => Blog.deleteOne({ _id: req.params.messageId }).then((response) => res.json(response)))
 
 app.listen(5000, () => console.log("Listening on port 5000"));
