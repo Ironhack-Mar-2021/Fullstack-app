@@ -20,6 +20,15 @@ mongoose
 app.get("/getMessage", (req, res) => Blog.find().then((response) => res.json(response)));
 
 
+app.patch('/update/:messageId', (req, res) => {
+  console.log(req)
+  Blog.findByIdAndUpdate(req.params.messageId, { $inc: { likes: 1 } }, { new: true })
+    .then((response) => {
+      res.status(200).json(response);
+    })
+})
+
+
 app.post("/", (req, res) => {
   console.log(req.body)
   Blog.create(req.body)

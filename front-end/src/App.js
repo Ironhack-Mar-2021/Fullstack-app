@@ -18,12 +18,30 @@ function App() {
   function ShowMessages() {
     return messages.map((msg) => (
       <div key={msg.__id}>
+        <button onClick={() => handleLike(msg._id)}>Likes {msg.likes}</button>
         {msg.message}
         <button type="delete" onClick={() => handleClick(msg._id)}>Delete</button>
       </div>
 
     ))
   }
+
+
+
+  function handleLike(id) {
+    axios.patch(`http://localhost:5000/update/${id}`)
+      .then((res) => {
+        console.log(res)
+        let updatedMsgs = messages.map((msg) => {
+          if (msg._id == id) {
+            msg.likes = res.data.likes
+          }
+          return msg
+        })
+        setMessages(updatedMsgs)
+      })
+  }
+
 
   function handleClick(messageId) {
     axios.delete(`http://localhost:5000/delete/${messageId}`).then(() => {
@@ -48,7 +66,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Class Blog</h1>
+      <h1>Class Blog!!</h1>
       <form onSubmit={handleSubmit}>
         <input type="text" onChange={handleChange} />
         <button type="submit">Submit</button>
