@@ -5,6 +5,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 const Blog = require("./blogmodel.js");
+const { response } = require("express");
 
 mongoose
   .connect('mongodb+srv://cynthia:cynthia@cluster0.xgsgs.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
@@ -16,7 +17,8 @@ mongoose
   .catch(err => console.error('Error connecting to mongo', err));
 
 
-app.get("/home", (req, res) => console.log(res));
+app.get("/getMessage", (req, res) => Blog.find().then((response) => res.json(response)) );
+
 
 app.post("/", (req, res) => {
     console.log(req.body)

@@ -5,8 +5,17 @@ import axios from "axios";
 
 function App() {
   const [message, setMessage] = useState("");
+  const[ messages, setMessages] = useState([])
+
+  useEffect(()=> {
+    axios.get('http://localhost:5000/getMessage')
+    .then((res) => setMessages(res.data))
+  },[])
+  
+
 
   function handleChange(e) {
+    console.log(messages)
     setMessage(e.target.value);
     console.log(message);
   }
@@ -26,5 +35,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;
